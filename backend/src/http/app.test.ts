@@ -13,6 +13,7 @@ const cfg: Config = {
   databaseUrl: DATABASE_URL ?? '',
   supabaseUrl: 'http://localhost',
   supabaseAnonKey: 'anon',
+  supabaseJwtSecret: 'test-secret',
   storageBucket: 'wallpapers',
   storagePublicBase: 'http://storage.local/wallpapers',
   downloadDedupeWindowHours: 24,

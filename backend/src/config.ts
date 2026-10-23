@@ -3,6 +3,7 @@ export interface Config {
   databaseUrl: string;
   supabaseUrl: string;
   supabaseAnonKey: string;
+  supabaseJwtSecret: string;   // segredo HS256 do Supabase Auth (verificação de token)
   storageBucket: string;
   // URL pública base do storage para montar fileUrl/thumbnailUrl.
   storagePublicBase: string;
@@ -24,6 +25,7 @@ export function loadConfig(): Config {
     databaseUrl: req('DATABASE_URL', 'postgres://postgres@localhost:5432/postgres'),
     supabaseUrl,
     supabaseAnonKey: req('SUPABASE_ANON_KEY', 'anon-dev'),
+    supabaseJwtSecret: req('SUPABASE_JWT_SECRET', 'dev-jwt-secret'),
     storageBucket: bucket,
     storagePublicBase:
       process.env.STORAGE_PUBLIC_BASE ?? `${supabaseUrl}/storage/v1/object/public/${bucket}`,

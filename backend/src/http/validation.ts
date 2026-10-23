@@ -22,3 +22,32 @@ export const registerDownloadSchema = z.object({
 });
 
 export const uuidParam = z.string().uuid();
+
+export const upsertWallpaperSchema = z.object({
+  id: z.string().uuid().optional(),
+  title: z.string().min(1).max(200),
+  description: z.string().max(4000).nullish(),
+  categoryId: z.string().uuid().nullish(),
+  type: z.enum(['image', 'video']),
+  featured: z.boolean().optional(),
+  tags: z.array(z.string().min(1).max(80)).max(30).optional(),
+  filePath: z.string().min(1).max(500).optional(),
+  thumbnailPath: z.string().max(500).nullish(),
+  resolutionWidth: z.number().int().positive().nullish(),
+  resolutionHeight: z.number().int().positive().nullish(),
+  fileSize: z.number().int().nonnegative().nullish(),
+  duration: z.number().nonnegative().nullish(),
+  checksum: z.string().max(128).nullish(),
+});
+
+export const statusSchema = z.object({ status: z.enum(['draft', 'published']) });
+
+export const upsertCategorySchema = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().min(1).max(80),
+  slug: z.string().min(1).max(80).optional(),
+  icon: z.string().max(60).nullish(),
+  imagePath: z.string().max(500).nullish(),
+  sortOrder: z.number().int().optional(),
+  enabled: z.boolean().optional(),
+});

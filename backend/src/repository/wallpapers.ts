@@ -27,12 +27,14 @@ export interface ListDeps {
   storageBase: string;
 }
 
-// Lista o catálogo público (apenas 'published'), com filtros, busca e paginação.
+// Lista o catálogo com filtros, busca e paginação.
+// Por padrão só 'published'; com opts.includeAll=true (contexto admin) traz rascunhos também.
 export async function listWallpapers(
   deps: ListDeps,
   q: WallpaperQuery,
+  opts: { includeAll?: boolean } = {},
 ): Promise<WallpaperListResponse> {
-  const where: string[] = [`w.status = 'published'`];
+  const where: string[] = opts.includeAll ? [] : [`w.status = 'published'`];
   const params: unknown[] = [];
   const p = (v: unknown) => `$${params.push(v)}`;
 
@@ -57,7 +59,7 @@ export async function listWallpapers(
     );
   }
 
-  const whereSql = `where ${where.join(' and ')}`;
+  const whereSql = where.length ? `where ${where.join(' and ')}` : '';
   const order =
     q.sort === 'popular'
       ? 'w.download_count desc, w.published_at desc'

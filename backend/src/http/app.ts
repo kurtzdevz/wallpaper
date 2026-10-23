@@ -5,6 +5,7 @@ import { listCategories } from '../repository/categories.ts';
 import { registerDownload } from '../repository/downloads.ts';
 import { wallpaperQuerySchema, registerDownloadSchema, uuidParam } from './validation.ts';
 import { rateLimit } from './rateLimit.ts';
+import { adminRouter } from './adminRoutes.ts';
 
 export function createApp(cfg: Config): Express {
   const app = express();
@@ -70,6 +71,9 @@ export function createApp(cfg: Config): Express {
       res.json(result);
     }),
   );
+
+  // --- Admin (autenticado) ---
+  app.use('/api/v1/admin', adminRouter(cfg));
 
   // 404 padrão da API
   app.use('/api/', (_req, res) => res.status(404).json({ error: 'not_found', message: 'Rota não encontrada' }));
