@@ -1,0 +1,33 @@
+# deps
+node_modules/
+**/node_modules/
+
+# builds
+dist/
+.next/
+out/
+bin/
+obj/
+
+# env / segredos
+.env
+.env.local
+*.local
+
+# .NET
+*.user
+*.suo
+[Dd]ebug/
+[Rr]elease/
+publish/
+
+# sistema
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*
+node_modules/
+dist/
+.next/

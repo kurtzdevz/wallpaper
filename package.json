@@ -1,0 +1,15 @@
+{
+  "name": "wallpaper-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plataforma de wallpapers: app desktop Windows + painel admin web, integrados.",
+  "workspaces": [
+    "shared",
+    "backend",
+    "admin"
+  ],
+  "scripts": {
+    "build:shared": "npm --workspace @wallpaper/shared run build",
+    "test:shared": "npm --workspace @wallpaper/shared run test"
+  }
+}
