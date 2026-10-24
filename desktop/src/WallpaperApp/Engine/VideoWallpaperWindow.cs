@@ -3,6 +3,9 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
+// MediaPlayer existe em System.Windows.Media e em LibVLCSharp.Shared — desambigua:
+using MediaPlayer = LibVLCSharp.Shared.MediaPlayer;
+using Media = LibVLCSharp.Shared.Media;
 
 namespace WallpaperApp.Engine;
 
