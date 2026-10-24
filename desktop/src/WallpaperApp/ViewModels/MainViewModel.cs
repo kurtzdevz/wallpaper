@@ -10,14 +10,10 @@ public sealed class MainViewModel : ObservableObject
     private string _section = "home";
     public string Section { get => _section; private set => Set(ref _section, value); }
 
-    // instâncias reaproveitadas das seções
+    // seções persistentes
     private readonly HomeViewModel _home = new();
     private readonly DiscoverViewModel _discover = new();
-    private readonly PlaceholderViewModel _library = new("Minha Biblioteca", "Seus wallpapers baixados aparecerão aqui.");
-    private readonly PlaceholderViewModel _favorites = new("Favoritos", "Marque wallpapers como favoritos para vê-los aqui.");
-    private readonly PlaceholderViewModel _downloads = new("Downloads", "Acompanhe seus downloads em andamento.");
-    private readonly PlaceholderViewModel _active = new("Wallpapers Ativos", "Gerencie o que está aplicado em cada monitor.");
-    private readonly PlaceholderViewModel _settings = new("Configurações", "Desempenho, inicialização, ajuste por monitor e mais.");
+    private readonly DownloadsViewModel _downloads = new();
 
     public RelayCommand NavigateCommand { get; }
 
@@ -31,15 +27,16 @@ public sealed class MainViewModel : ObservableObject
     public void Navigate(string section)
     {
         Section = section;
+        // Biblioteca/Favoritos/Ativos são recriados a cada visita para refletir o estado atual.
         CurrentViewModel = section switch
         {
             "discover" => _discover,
-            "library" => _library,
-            "favorites" => _favorites,
+            "library" => new LibraryListViewModel(false),
+            "favorites" => new LibraryListViewModel(true),
             "downloads" => _downloads,
-            "active" => _active,
-            "settings" => _settings,
-            _ => _home,
+            "active" => new ActiveViewModel(),
+            "settings" => new SettingsViewModel(),
+            _ => (object)_home,
         };
     }
 }

@@ -1,0 +1,44 @@
+<UserControl x:Class="WallpaperApp.Views.DownloadsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="24,20,24,0">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Downloads" FontSize="22" FontWeight="Bold"/>
+            <TextBlock Text="Em andamento e concluídos nesta sessão" Foreground="{StaticResource Muted}" FontSize="13" Margin="0,4,0,0"/>
+        </StackPanel>
+        <Border Grid.Row="1" Background="{StaticResource Surface}" BorderBrush="{StaticResource Border}"
+                BorderThickness="1" CornerRadius="12" Padding="8,4" VerticalAlignment="Top">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="10,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/><ColumnDefinition Width="*"/><ColumnDefinition Width="90"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Title}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            <ProgressBar Grid.Column="1" Height="6" Minimum="0" Maximum="1" Value="{Binding Progress}"
+                                         Foreground="{StaticResource Accent}" Background="{StaticResource Surface2}"
+                                         BorderThickness="0" VerticalAlignment="Center" Margin="10,0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding StatusLabel}" Foreground="{StaticResource Muted}"
+                                       FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+        <TextBlock Grid.Row="1" Text="Nenhum download ainda." Foreground="{StaticResource Muted}"
+                   HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Items.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+</UserControl>

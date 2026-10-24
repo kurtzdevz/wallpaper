@@ -113,10 +113,12 @@ public sealed class DiscoverViewModel : ObservableObject
     {
         card.Busy = true;
         card.Progress = 0;
+        var track = App.DownloadTracker.Begin(card.Title);
         try
         {
-            var progress = new Progress<double>(p => card.Progress = p);
+            var progress = new Progress<double>(p => { card.Progress = p; track.Progress = p; });
             var dl = await App.Downloads.DownloadAsync(card.Model, progress);
+            track.Done = true;
 
             if (card.Model.Kind == WallpaperKind.Video)
                 App.Engine.ApplyVideo(dl.LocalPath, App.Settings.Current);
@@ -133,6 +135,7 @@ public sealed class DiscoverViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            track.Failed = true;
             MessageBox.Show("Não consegui aplicar: " + ex.Message, "MeuWallpaper",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }

@@ -14,6 +14,7 @@ public partial class App : Application
     public static LibraryStore Library { get; private set; } = null!;
     public static SettingsService Settings { get; private set; } = null!;
     public static DownloadManager Downloads { get; private set; } = null!;
+    public static DownloadsService DownloadTracker { get; } = new();
     public static LicenseService License { get; private set; } = null!;
     public static IWallpaperEngine Engine { get; private set; } = null!;
 
