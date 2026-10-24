@@ -39,7 +39,7 @@ public sealed class LibraryItemViewModel : ObservableObject
     {
         if (!File.Exists(Entry.LocalPath))
         {
-            MessageBox.Show("O arquivo não está mais no disco.", "MeuWallpaper");
+            MessageBox.Show("O arquivo não está mais no disco.", "WlpBrasil");
             return;
         }
         try
@@ -56,7 +56,7 @@ public sealed class LibraryItemViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Não consegui aplicar: " + ex.Message, "MeuWallpaper");
+            MessageBox.Show("Não consegui aplicar: " + ex.Message, "WlpBrasil");
         }
     }
 

@@ -30,7 +30,7 @@ export default function LoginPage() {
   return (
     <div className="login">
       <form className="login-card" onSubmit={submit}>
-        <div className="brand">Meu<b>Wallpaper</b></div>
+        <div className="brand">Wlp<b>Brasil</b></div>
         <p className="muted" style={{ margin: '6px 0 2px', fontSize: 13 }}>Painel administrativo</p>
         <label>E-mail</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="username" required />

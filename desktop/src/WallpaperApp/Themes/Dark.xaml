@@ -8,8 +8,8 @@
     <Color x:Key="BorderColor">#2A2A31</Color>
     <Color x:Key="TextColor">#ECECEF</Color>
     <Color x:Key="MutedColor">#8A8A95</Color>
-    <Color x:Key="AccentColor">#E23B3B</Color>
-    <Color x:Key="AccentHoverColor">#F05454</Color>
+    <Color x:Key="AccentColor">#16A34A</Color>
+    <Color x:Key="AccentHoverColor">#1FB858</Color>
     <Color x:Key="OkColor">#27C093</Color>
 
     <SolidColorBrush x:Key="Bg" Color="{StaticResource BgColor}"/>

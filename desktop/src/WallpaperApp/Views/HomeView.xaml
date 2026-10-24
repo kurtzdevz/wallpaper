@@ -4,7 +4,7 @@
     <Grid Margin="28">
         <StackPanel>
             <TextBlock Text="Início" FontSize="26" FontWeight="Bold"/>
-            <TextBlock Text="Bem-vindo ao MeuWallpaper" Foreground="{StaticResource Muted}" Margin="0,4,0,24"/>
+            <TextBlock Text="Bem-vindo ao WlpBrasil" Foreground="{StaticResource Muted}" Margin="0,4,0,24"/>
 
             <WrapPanel>
                 <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Border}" BorderThickness="1"

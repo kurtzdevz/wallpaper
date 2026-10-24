@@ -41,14 +41,14 @@ public sealed class AppConfig
         };
     }
 
-    // Pasta de dados do app (sem precisar de admin): %AppData%\MeuWallpaper
+    // Pasta de dados do app (sem precisar de admin): %AppData%\WlpBrasil
     public static string DataDir
     {
         get
         {
             var dir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "MeuWallpaper");
+                "WlpBrasil");
             Directory.CreateDirectory(dir);
             return dir;
         }

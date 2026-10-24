@@ -9,7 +9,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyName>MeuWallpaper</AssemblyName>
+    <ApplicationIcon>assets\WlpBrasil.ico</ApplicationIcon>
+    <AssemblyName>WlpBrasil</AssemblyName>
+    <Product>WlpBrasil</Product>
+    <AssemblyTitle>WlpBrasil</AssemblyTitle>
     <RootNamespace>WallpaperApp</RootNamespace>
     <Platforms>x64</Platforms>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -21,6 +24,11 @@
     <PackageReference Include="LibVLCSharp" Version="3.9.0" />
     <PackageReference Include="LibVLCSharp.WPF" Version="3.9.0" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\WlpBrasil.ico" />
+    <Resource Include="assets\logo256.png" />
   </ItemGroup>
 
   <ItemGroup>

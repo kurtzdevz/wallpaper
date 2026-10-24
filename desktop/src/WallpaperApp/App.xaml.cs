@@ -39,7 +39,7 @@ public partial class App : Application
             // libvlc ausente ou Windows incompatível: app ainda abre (catálogo/biblioteca),
             // só a aplicação de wallpaper fica indisponível.
             MessageBox.Show("Motor de wallpaper indisponível: " + ex.Message,
-                "MeuWallpaper", MessageBoxButton.OK, MessageBoxImage.Warning);
+                "WlpBrasil", MessageBoxButton.OK, MessageBoxImage.Warning);
             Engine = new NullWallpaperEngine();
         }
 

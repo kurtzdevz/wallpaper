@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WallpaperApp"
-        Title="Ativar — MeuWallpaper" Height="430" Width="460"
+        Title="Ativar — WlpBrasil" Height="430" Width="460"
+        Icon="/assets/WlpBrasil.ico"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Background="{StaticResource Bg}">
     <Window.Resources>
@@ -12,7 +13,7 @@
     <Grid>
         <StackPanel VerticalAlignment="Center" Margin="40,0">
             <TextBlock FontSize="26" FontWeight="Bold" HorizontalAlignment="Center">
-                <Run Text="Meu"/><Run Text="Wallpaper" Foreground="{StaticResource Accent}"/>
+                <Run Text="Wlp"/><Run Text="Brasil" Foreground="{StaticResource Accent}"/>
             </TextBlock>
             <TextBlock Text="Ative com sua chave de licença para começar." Foreground="{StaticResource Muted}"
                        HorizontalAlignment="Center" Margin="0,8,0,24" TextAlignment="Center"/>

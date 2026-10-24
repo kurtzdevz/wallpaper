@@ -6,7 +6,7 @@ namespace WallpaperApp.Services;
 public static class StartupService
 {
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private const string AppName = "MeuWallpaper";
+    private const string AppName = "WlpBrasil";
 
     public static void Set(bool enabled)
     {

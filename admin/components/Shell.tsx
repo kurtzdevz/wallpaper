@@ -46,7 +46,7 @@ export default function Shell({ active, children }: { active: string; children: 
   return (
     <div className="shell">
       <aside className="side">
-        <div className="brand">Meu<b>Wallpaper</b></div>
+        <div className="brand">Wlp<b>Brasil</b></div>
         <nav className="nav">
           {NAV.map((n) => (
             <a key={n.k} href={n.href} className={active === n.k ? 'active' : ''}>{n.label}</a>

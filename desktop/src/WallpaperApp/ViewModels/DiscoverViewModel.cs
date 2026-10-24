@@ -136,7 +136,7 @@ public sealed class DiscoverViewModel : ObservableObject
         catch (Exception ex)
         {
             track.Failed = true;
-            MessageBox.Show("Não consegui aplicar: " + ex.Message, "MeuWallpaper",
+            MessageBox.Show("Não consegui aplicar: " + ex.Message, "WlpBrasil",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         finally { card.Busy = false; }
