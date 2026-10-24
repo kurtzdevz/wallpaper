@@ -58,6 +58,28 @@ public sealed class ApiClient
         return dto?.Items ?? new();
     }
 
+    public sealed record ActivateResponse(bool Ok, bool AlreadyActivated, string? ExpiresAt, string? Error, string? Message);
+
+    // Ativa a licença no servidor. Retorna (ok, mensagem) para a UI.
+    public async Task<ActivateResponse> ActivateAsync(string key, string deviceHash, string deviceName, CancellationToken ct = default)
+    {
+        try
+        {
+            var resp = await _http.PostAsJsonAsync("api/v1/activate", new { key, deviceHash, deviceName }, ct);
+            if (resp.IsSuccessStatusCode)
+            {
+                var dto = await resp.Content.ReadFromJsonAsync<ActivateResponse>(JsonOpts, ct);
+                return dto ?? new ActivateResponse(false, false, null, "parse", "Resposta inválida");
+            }
+            var err = await resp.Content.ReadFromJsonAsync<ActivateResponse>(JsonOpts, ct);
+            return err ?? new ActivateResponse(false, false, null, "http", $"Erro {(int)resp.StatusCode}");
+        }
+        catch (Exception ex)
+        {
+            return new ActivateResponse(false, false, null, "network", "Sem conexão com o servidor: " + ex.Message);
+        }
+    }
+
     public async Task<RegisterDownloadResult?> RegisterDownloadAsync(string wallpaperId, string clientHash, CancellationToken ct = default)
     {
         var resp = await _http.PostAsJsonAsync("api/v1/downloads", new { wallpaperId, clientHash }, ct);

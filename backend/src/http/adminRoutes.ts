@@ -7,8 +7,10 @@ import {
 } from '../repository/admin.ts';
 import { listWallpapers, getWallpaperById } from '../repository/wallpapers.ts';
 import { listCategories } from '../repository/categories.ts';
+import { generateKeys, listKeys, revokeKey, deleteKey } from '../repository/keys.ts';
 import {
   upsertWallpaperSchema, statusSchema, upsertCategorySchema, uuidParam, wallpaperQuerySchema,
+  generateKeysSchema,
 } from './validation.ts';
 
 export function adminRouter(cfg: Config): Router {
@@ -89,6 +91,35 @@ export function adminRouter(cfg: Config): Router {
     const id = uuidParam.safeParse(req.params.id);
     if (!id.success) return res.status(400).json({ error: 'invalid_id', message: 'ID inválido' });
     const ok = await deleteCategory(cfg.databaseUrl, id.data);
+    if (!ok) return res.status(404).json({ error: 'not_found', message: 'Não encontrado' });
+    res.json({ ok: true });
+  }));
+
+  // ----- Licenças (keys) -----
+  r.get('/keys', wrap(async (_req, res) => res.json({ items: await listKeys(cfg.databaseUrl) })));
+
+  r.post('/keys', wrap(async (req, res) => {
+    const parsed = generateKeysSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'invalid_body', message: 'Dados inválidos', details: parsed.error.flatten() });
+    const keys = await generateKeys(cfg.databaseUrl, parsed.data.count, {
+      label: parsed.data.label, maxActivations: parsed.data.maxActivations,
+      expiresAt: parsed.data.expiresAt ?? null,
+    });
+    res.status(201).json({ items: keys });
+  }));
+
+  r.post('/keys/:id/revoke', wrap(async (req, res) => {
+    const id = uuidParam.safeParse(req.params.id);
+    if (!id.success) return res.status(400).json({ error: 'invalid_id', message: 'ID inválido' });
+    const ok = await revokeKey(cfg.databaseUrl, id.data);
+    if (!ok) return res.status(404).json({ error: 'not_found', message: 'Não encontrado' });
+    res.json({ ok: true });
+  }));
+
+  r.delete('/keys/:id', wrap(async (req, res) => {
+    const id = uuidParam.safeParse(req.params.id);
+    if (!id.success) return res.status(400).json({ error: 'invalid_id', message: 'ID inválido' });
+    const ok = await deleteKey(cfg.databaseUrl, id.data);
     if (!ok) return res.status(404).json({ error: 'not_found', message: 'Não encontrado' });
     res.json({ ok: true });
   }));

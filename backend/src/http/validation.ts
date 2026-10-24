@@ -42,6 +42,19 @@ export const upsertWallpaperSchema = z.object({
 
 export const statusSchema = z.object({ status: z.enum(['draft', 'published']) });
 
+export const activateSchema = z.object({
+  key: z.string().min(6).max(40),
+  deviceHash: z.string().min(6).max(128),
+  deviceName: z.string().max(120).optional(),
+});
+
+export const generateKeysSchema = z.object({
+  count: z.coerce.number().int().min(1).max(500).default(1),
+  label: z.string().max(200).optional(),
+  maxActivations: z.coerce.number().int().min(1).max(100).default(1),
+  expiresAt: z.string().datetime().nullish(),
+});
+
 export const upsertCategorySchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().min(1).max(80),

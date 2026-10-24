@@ -1,0 +1,42 @@
+<Window x:Class="WallpaperApp.Views.ActivationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WallpaperApp"
+        Title="Ativar — MeuWallpaper" Height="430" Width="460"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="{StaticResource Bg}">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="Bool2Vis"/>
+        <local:NullOrEmptyToVisibilityConverter x:Key="HasText" Invert="True"/>
+    </Window.Resources>
+    <Grid>
+        <StackPanel VerticalAlignment="Center" Margin="40,0">
+            <TextBlock FontSize="26" FontWeight="Bold" HorizontalAlignment="Center">
+                <Run Text="Meu"/><Run Text="Wallpaper" Foreground="{StaticResource Accent}"/>
+            </TextBlock>
+            <TextBlock Text="Ative com sua chave de licença para começar." Foreground="{StaticResource Muted}"
+                       HorizontalAlignment="Center" Margin="0,8,0,24" TextAlignment="Center"/>
+
+            <TextBox Style="{StaticResource SearchBox}" FontSize="16" FontWeight="SemiBold"
+                     Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalContentAlignment="Center" Padding="12">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding ActivateCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+
+            <TextBlock Text="{Binding Error}" Foreground="#FF6B6B" FontSize="12.5" Margin="2,10,0,0"
+                       TextWrapping="Wrap" Visibility="{Binding Error, Converter={StaticResource HasText}}"/>
+
+            <Button Content="Ativar" Style="{StaticResource PrimaryButton}" Margin="0,18,0,0"
+                    Command="{Binding ActivateCommand}"/>
+            <TextBlock Text="Ativando..." Foreground="{StaticResource Muted}" FontSize="12"
+                       HorizontalAlignment="Center" Margin="0,10,0,0"
+                       Visibility="{Binding Busy, Converter={StaticResource Bool2Vis}}"/>
+
+            <TextBlock Foreground="{StaticResource Muted}" FontSize="11.5" Margin="0,22,0,0"
+                       TextAlignment="Center" TextWrapping="Wrap"
+                       Text="A chave é gerada e gerenciada no painel web. Cada chave vale para um número definido de computadores."/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -14,6 +14,7 @@ public partial class App : Application
     public static LibraryStore Library { get; private set; } = null!;
     public static SettingsService Settings { get; private set; } = null!;
     public static DownloadManager Downloads { get; private set; } = null!;
+    public static LicenseService License { get; private set; } = null!;
     public static IWallpaperEngine Engine { get; private set; } = null!;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -26,6 +27,7 @@ public partial class App : Application
         Library = new LibraryStore();
         Settings = new SettingsService();
         Downloads = new DownloadManager(Api, Library);
+        License = new LicenseService(Api);
 
         try
         {
@@ -43,12 +45,27 @@ public partial class App : Application
         // reage a troca de monitores / resolução
         SystemEvents.DisplaySettingsChanged += (_, _) => Engine.OnDisplayChanged();
 
-        var main = new MainWindow { DataContext = new MainViewModel() };
+        // gate de licença: sem ativação, abre a tela de ativação primeiro
+        if (License.IsActivated)
+        {
+            ShowMain();
+        }
+        else
+        {
+            var vm = new ActivationViewModel();
+            var win = new ActivationWindow { DataContext = vm };
+            vm.Activated += () => { ShowMain(); win.Close(); };
+            win.Show();
+        }
+    }
 
+    private void ShowMain()
+    {
+        var main = new MainWindow { DataContext = new MainViewModel() };
         if (Settings.Current.StartMinimized) main.WindowState = WindowState.Minimized;
+        MainWindow = main;
         main.Show();
 
-        // restaura o wallpaper ativo, se habilitado
         if (Settings.Current.RestoreOnStartup && Settings.Current.ActiveWallpaperId is string id)
             RestoreActive(id);
     }

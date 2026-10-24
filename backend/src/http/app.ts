@@ -3,9 +3,10 @@ import type { Config } from '../config.ts';
 import { listWallpapers, getWallpaperById } from '../repository/wallpapers.ts';
 import { listCategories } from '../repository/categories.ts';
 import { registerDownload } from '../repository/downloads.ts';
-import { wallpaperQuerySchema, registerDownloadSchema, uuidParam } from './validation.ts';
+import { wallpaperQuerySchema, registerDownloadSchema, uuidParam, activateSchema } from './validation.ts';
 import { rateLimit } from './rateLimit.ts';
 import { adminRouter } from './adminRoutes.ts';
+import { activate } from '../repository/keys.ts';
 
 export function createApp(cfg: Config): Express {
   const app = express();
@@ -68,6 +69,24 @@ export function createApp(cfg: Config): Express {
         parsed.data.clientHash,
       );
       if (!result.ok) return res.status(404).json({ error: 'not_found', message: 'Wallpaper não encontrado ou não publicado' });
+      res.json(result);
+    }),
+  );
+
+  // --- Ativação de licença (público, usado pelo app desktop) ---
+  app.post(
+    '/api/v1/activate',
+    wrap(async (req, res) => {
+      const parsed = activateSchema.safeParse(req.body);
+      if (!parsed.success) return res.status(400).json({ error: 'invalid_body', message: 'Dados inválidos' });
+      const result = await activate(cfg.databaseUrl, parsed.data.key, parsed.data.deviceHash, parsed.data.deviceName);
+      if (!result.ok) {
+        const msg = {
+          invalid: 'Chave inválida', revoked: 'Chave revogada',
+          expired: 'Chave expirada', limit: 'Limite de ativações atingido',
+        }[result.reason];
+        return res.status(403).json({ error: result.reason, message: msg });
+      }
       res.json(result);
     }),
   );
