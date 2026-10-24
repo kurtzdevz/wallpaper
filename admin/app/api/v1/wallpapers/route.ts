@@ -28,9 +28,11 @@ export async function GET(req: Request) {
   if (minWidth) query = query.gte('resolution_width', parseInt(minWidth, 10) || 0);
   if (search) query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
 
-  if (sort === 'popular') query = query.order('download_count', { ascending: false });
-  else if (sort === 'oldest') query = query.order('published_at', { ascending: true });
-  else query = query.order('published_at', { ascending: false });
+  // Ordena por created_at (estável, NOT NULL). Evita um bug do PostgREST ao
+  // combinar order por published_at (nullable) com range/count.
+  if (sort === 'popular') query = query.order('download_count', { ascending: false }).order('created_at', { ascending: false });
+  else if (sort === 'oldest') query = query.order('created_at', { ascending: true });
+  else query = query.order('created_at', { ascending: false });
 
   query = query.range(from, from + pageSize - 1);
 
