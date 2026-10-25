@@ -22,10 +22,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Remove o import global de System.Windows.Forms (vem do UseWindowsForms) para
-         evitar ambiguidade de UserControl/Application/MessageBox com o WPF.
+    <!-- Remove os imports globais do WinForms (System.Windows.Forms e System.Drawing),
+         que vêm do UseWindowsForms, para evitar ambiguidade de
+         UserControl/Application/MessageBox/Brushes/Color com o WPF.
          TrayService e WallpaperGuard usam nome completo/alias para o WinForms. -->
     <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
   </ItemGroup>
 
   <ItemGroup>
