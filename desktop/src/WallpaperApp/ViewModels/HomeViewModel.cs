@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using WallpaperApp.Models;
 using WallpaperApp.Mvvm;
+using WallpaperApp.Services;
 
 namespace WallpaperApp.ViewModels;
 
