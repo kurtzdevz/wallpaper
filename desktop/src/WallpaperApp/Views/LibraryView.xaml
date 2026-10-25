@@ -11,10 +11,6 @@
             <RowDefinition Height="Auto"/><RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="0,0,0,16">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Sub}" Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,0"/>
-            </StackPanel>
             <Button Content="⬆  Importar do PC" Style="{StaticResource GhostButton}"
                     HorizontalAlignment="Right" VerticalAlignment="Center"
                     Command="{Binding ImportCommand}"

@@ -99,10 +99,118 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="8"
+                    <Border Background="{TemplateBinding Background}" CornerRadius="10"
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===== Novos estilos do redesign ===== -->
+
+    <!-- Fonte de ícones monocromáticos do Windows 10/11 -->
+    <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+    <!-- Gradientes verdes -->
+    <LinearGradientBrush x:Key="LogoBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#2BD46A" Offset="0"/>
+        <GradientStop Color="#15803D" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="SidebarEdge" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#0022C55E" Offset="0"/>
+        <GradientStop Color="#8022C55E" Offset="0.5"/>
+        <GradientStop Color="#0022C55E" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HeroGlow" StartPoint="1,0" EndPoint="0.2,1">
+        <GradientStop Color="#3A16A34A" Offset="0"/>
+        <GradientStop Color="#0016A34A" Offset="0.75"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ChartFill" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#5516A34A" Offset="0"/>
+        <GradientStop Color="#0016A34A" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Card base -->
+    <Style x:Key="Card" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="14"/>
+    </Style>
+
+    <!-- Chip de ícone (quadradinho arredondado com glifo) -->
+    <Style x:Key="IconChip" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource AccentSoft}"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Width" Value="42"/>
+        <Setter Property="Height" Value="42"/>
+    </Style>
+
+    <!-- Botão redondo só de ícone (sino, menu) -->
+    <Style x:Key="IconButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontFamily" Value="{DynamicResource IconFont}"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Width" Value="44"/>
+        <Setter Property="Height" Value="44"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="12"
+                            BorderBrush="{DynamicResource Border}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Item de navegação com barra de destaque -->
+    <Style x:Key="NavItem2" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Margin" Value="12,2"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid>
+                        <Border x:Name="b" Background="Transparent" CornerRadius="11" Padding="13,10">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <Rectangle x:Name="bar" Width="3" Height="22" RadiusX="2" RadiusY="2"
+                                   Fill="{DynamicResource Accent}" HorizontalAlignment="Left"
+                                   VerticalAlignment="Center" Margin="-4,0,0,0" Visibility="Collapsed"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="{DynamicResource Surface2}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="{DynamicResource AccentSoft}"/>
+                            <Setter TargetName="bar" Property="Visibility" Value="Visible"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -24,6 +24,9 @@ public partial class App : Application
     // true quando o usuário realmente mandou sair (pela bandeja)
     public static bool ExitRequested { get; private set; }
 
+    // Permite que telas (ex.: Início) peçam navegação à casca.
+    public static Action<string>? Navigate { get; set; }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);

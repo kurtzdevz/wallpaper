@@ -3,10 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="24,20,24,0">
         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="Downloads" FontSize="22" FontWeight="Bold"/>
-            <TextBlock Text="Em andamento e concluídos nesta sessão" Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,0"/>
-        </StackPanel>
+        <StackPanel Grid.Row="0" Margin="0,0,0,4"/>
         <Border Grid.Row="1" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}"
                 BorderThickness="1" CornerRadius="12" Padding="8,4" VerticalAlignment="Top">
             <ItemsControl ItemsSource="{Binding Items}">

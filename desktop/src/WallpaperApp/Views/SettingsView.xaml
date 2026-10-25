@@ -21,10 +21,7 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24,20">
-            <TextBlock Text="Configurações" FontSize="22" FontWeight="Bold"/>
-            <TextBlock Text="Desempenho e inicialização" Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,18"/>
-
+        <StackPanel Margin="24,16">
             <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1"
                     CornerRadius="12" Padding="18,6" MaxWidth="580" HorizontalAlignment="Left">
                 <StackPanel>

@@ -24,25 +24,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Barra superior: busca + botão Filtros -->
+            <!-- Barra superior: botão Filtros (a busca fica no topo do app) -->
             <Grid Grid.Row="0" Margin="0,0,0,14">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0" MaxWidth="460" HorizontalAlignment="Left">
-                    <TextBox Style="{StaticResource SearchBox}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Return" Command="{Binding SearchCommand}"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
-                    <TextBlock Text="Buscar wallpapers..." Foreground="{DynamicResource Muted}" Margin="12,0,0,0"
-                               VerticalAlignment="Center" IsHitTestVisible="False"
-                               Visibility="{Binding Search, Converter={StaticResource NoText}}"/>
-                </Grid>
-
-                <Button Grid.Column="1" Content="⚙  Filtros" Style="{StaticResource GhostButton}"
+                <Button HorizontalAlignment="Right" Content="⚙  Filtros" Style="{StaticResource GhostButton}"
                         Command="{Binding ToggleFiltersCommand}"/>
             </Grid>
 
