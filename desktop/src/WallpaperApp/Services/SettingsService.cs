@@ -14,6 +14,7 @@ public sealed class AppSettings
     public bool MuteVideo { get; set; } = true;
     public bool HardwareDecode { get; set; } = true;
     public string ImageFit { get; set; } = "fill";   // fill, fit, stretch, center, tile
+    public string Theme { get; set; } = "dark";       // dark, light, system
     public string? ActiveWallpaperId { get; set; }
     public bool RestoreOnStartup { get; set; } = true;
 

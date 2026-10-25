@@ -25,6 +25,14 @@ public sealed class SettingsViewModel : ObservableObject
     public int FpsLimit { get => S.FpsLimit; set { S.FpsLimit = value; Save(); OnPropertyChanged(); } }
     public string ImageFit { get => S.ImageFit; set { S.ImageFit = value; Save(); OnPropertyChanged(); } }
 
+    // Tema: dark, light, system
+    public string Theme
+    {
+        get => S.Theme;
+        set { S.Theme = value; ThemeService.Apply(value); Save(); OnPropertyChanged(); }
+    }
+    public RelayCommand SetThemeCommand { get; }
+
     // Troca automática (playlist)
     public bool AutoSwitchEnabled
     {
@@ -52,5 +60,7 @@ public sealed class SettingsViewModel : ObservableObject
         S.StartWithWindows = StartupService.IsEnabled();
         SetFpsCommand = new RelayCommand(p => { if (int.TryParse(p?.ToString(), out var v)) FpsLimit = v; });
         SetFitCommand = new RelayCommand(p => ImageFit = p?.ToString() ?? "fill");
+        SetThemeCommand = new RelayCommand(p => Theme = p?.ToString() ?? "dark");
+        SetIntervalCommand = new RelayCommand(p => { if (int.TryParse(p?.ToString(), out var v)) AutoSwitchMinutes = v; });
     }
 }

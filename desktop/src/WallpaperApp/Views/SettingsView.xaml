@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <UserControl.Resources>
         <Style x:Key="SegBtn" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource Surface2}"/>
-            <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+            <Setter Property="Background" Value="{DynamicResource Surface2}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="12,7"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -23,48 +23,55 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="24,20">
             <TextBlock Text="Configurações" FontSize="22" FontWeight="Bold"/>
-            <TextBlock Text="Desempenho e inicialização" Foreground="{StaticResource Muted}" FontSize="13" Margin="0,4,0,18"/>
+            <TextBlock Text="Desempenho e inicialização" Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,18"/>
 
-            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Border}" BorderThickness="1"
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1"
                     CornerRadius="12" Padding="18,6" MaxWidth="580" HorizontalAlignment="Left">
                 <StackPanel>
-                    <CheckBox Content="Iniciar com o Windows" IsChecked="{Binding StartWithWindows}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Iniciar minimizado" IsChecked="{Binding StartMinimized}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Minimizar para a bandeja" IsChecked="{Binding MinimizeToTray}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Pausar vídeo em jogos / tela cheia" IsChecked="{Binding PauseOnFullscreen}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Pausar na bateria" IsChecked="{Binding PauseOnBattery}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Silenciar wallpapers com áudio" IsChecked="{Binding MuteVideo}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Decodificação por hardware" IsChecked="{Binding HardwareDecode}" Margin="0,12" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Restaurar wallpaper ao iniciar" IsChecked="{Binding RestoreOnStartup}" Margin="0,12" Foreground="{StaticResource Text}"/>
+                    <TextBlock Text="Tema" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,8,0,6"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                        <Button Content="🌙 Escuro" Style="{StaticResource SegBtn}" Command="{Binding SetThemeCommand}" CommandParameter="dark"/>
+                        <Button Content="☀ Claro" Style="{StaticResource SegBtn}" Command="{Binding SetThemeCommand}" CommandParameter="light"/>
+                        <Button Content="🖥 Sistema" Style="{StaticResource SegBtn}" Command="{Binding SetThemeCommand}" CommandParameter="system"/>
+                    </StackPanel>
 
-                    <TextBlock Text="Limite de FPS" Foreground="{StaticResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,14,0,6"/>
+                    <CheckBox Content="Iniciar com o Windows" IsChecked="{Binding StartWithWindows}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Iniciar minimizado" IsChecked="{Binding StartMinimized}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Minimizar para a bandeja" IsChecked="{Binding MinimizeToTray}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Pausar vídeo em jogos / tela cheia" IsChecked="{Binding PauseOnFullscreen}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Pausar na bateria" IsChecked="{Binding PauseOnBattery}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Silenciar wallpapers com áudio" IsChecked="{Binding MuteVideo}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Decodificação por hardware" IsChecked="{Binding HardwareDecode}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Restaurar wallpaper ao iniciar" IsChecked="{Binding RestoreOnStartup}" Margin="0,12" Foreground="{DynamicResource Text}"/>
+
+                    <TextBlock Text="Limite de FPS" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,14,0,6"/>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="15" Style="{StaticResource SegBtn}" Command="{Binding SetFpsCommand}" CommandParameter="15"/>
                         <Button Content="30" Style="{StaticResource SegBtn}" Command="{Binding SetFpsCommand}" CommandParameter="30"/>
                         <Button Content="60" Style="{StaticResource SegBtn}" Command="{Binding SetFpsCommand}" CommandParameter="60"/>
                     </StackPanel>
-                    <TextBlock Foreground="{StaticResource Muted}" FontSize="11" Margin="0,4,0,0">
+                    <TextBlock Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,4,0,0">
                         <Run Text="Atual: "/><Run Text="{Binding FpsLimit}"/><Run Text=" FPS"/>
                     </TextBlock>
 
-                    <TextBlock Text="Ajuste da imagem" Foreground="{StaticResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,16,0,6"/>
+                    <TextBlock Text="Ajuste da imagem" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,16,0,6"/>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Preencher" Style="{StaticResource SegBtn}" Command="{Binding SetFitCommand}" CommandParameter="fill"/>
                         <Button Content="Ajustar" Style="{StaticResource SegBtn}" Command="{Binding SetFitCommand}" CommandParameter="fit"/>
                         <Button Content="Esticar" Style="{StaticResource SegBtn}" Command="{Binding SetFitCommand}" CommandParameter="stretch"/>
                         <Button Content="Centralizar" Style="{StaticResource SegBtn}" Command="{Binding SetFitCommand}" CommandParameter="center"/>
                     </StackPanel>
-                    <TextBlock Foreground="{StaticResource Muted}" FontSize="11" Margin="0,4,0,8">
+                    <TextBlock Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,4,0,8">
                         <Run Text="Atual: "/><Run Text="{Binding ImageFit}"/>
                     </TextBlock>
 
-                    <TextBlock Text="Troca automática" Foreground="{StaticResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,16,0,2"/>
-                    <CheckBox Content="Trocar wallpaper automaticamente" IsChecked="{Binding AutoSwitchEnabled}" Margin="0,10" Foreground="{StaticResource Text}"/>
-                    <CheckBox Content="Apenas favoritos" IsChecked="{Binding AutoSwitchFavoritesOnly}" Margin="0,0,0,10" Foreground="{StaticResource Text}"/>
+                    <TextBlock Text="Troca automática" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,16,0,2"/>
+                    <CheckBox Content="Trocar wallpaper automaticamente" IsChecked="{Binding AutoSwitchEnabled}" Margin="0,10" Foreground="{DynamicResource Text}"/>
+                    <CheckBox Content="Apenas favoritos" IsChecked="{Binding AutoSwitchFavoritesOnly}" Margin="0,0,0,10" Foreground="{DynamicResource Text}"/>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="A cada" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="A cada" Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBox Width="64" Text="{Binding AutoSwitchMinutes}" VerticalContentAlignment="Center"/>
-                        <TextBlock Text="minutos" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        <TextBlock Text="minutos" Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="8,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

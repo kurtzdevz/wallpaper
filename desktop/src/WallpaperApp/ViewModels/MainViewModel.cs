@@ -1,4 +1,5 @@
 using WallpaperApp.Mvvm;
+using WallpaperApp.Services;
 
 namespace WallpaperApp.ViewModels;
 
@@ -10,17 +11,28 @@ public sealed class MainViewModel : ObservableObject
     private string _section = "home";
     public string Section { get => _section; private set => Set(ref _section, value); }
 
+    private string _themeIcon = ThemeService.Effective == "light" ? "🌙" : "☀";
+    public string ThemeIcon { get => _themeIcon; private set => Set(ref _themeIcon, value); }
+
     // seções persistentes
     private readonly HomeViewModel _home = new();
     private readonly DiscoverViewModel _discover = new();
     private readonly DownloadsViewModel _downloads = new();
 
     public RelayCommand NavigateCommand { get; }
+    public RelayCommand ToggleThemeCommand { get; }
 
     public MainViewModel()
     {
         _current = _home;
         NavigateCommand = new RelayCommand(p => Navigate(p as string ?? "home"));
+        ToggleThemeCommand = new RelayCommand(_ =>
+        {
+            var v = ThemeService.Toggle();
+            App.Settings.Current.Theme = v;
+            App.Settings.Save();
+            ThemeIcon = v == "light" ? "🌙" : "☀";
+        });
         _ = _discover.InitializeAsync();
     }
 

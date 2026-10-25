@@ -6,6 +6,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Styles.xaml"/>
+                <!-- índice 1 = tema de cores; trocado em runtime pelo ThemeService -->
                 <ResourceDictionary Source="Themes/Dark.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 

@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:WallpaperApp"
         Title="WlpBrasil" Height="760" Width="1180" MinWidth="960" MinHeight="600"
         Icon="/assets/WlpBrasil.ico"
-        Background="{StaticResource Bg}" WindowStartupLocation="CenterScreen">
+        Background="{DynamicResource Bg}" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <local:EqualsToBoolConverter x:Key="EqBool"/>
@@ -17,13 +17,22 @@
         </Grid.ColumnDefinitions>
 
         <!-- ===== Barra lateral ===== -->
-        <Border Grid.Column="0" Background="{StaticResource Surface}" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,1,0">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Top" Margin="22,24,22,18">
                     <TextBlock FontSize="20" FontWeight="Bold">
-                        <Run Text="Wlp"/><Run Text="Brasil" Foreground="{StaticResource Accent}"/>
+                        <Run Text="Wlp"/><Run Text="Brasil" Foreground="{DynamicResource Accent}"/>
                     </TextBlock>
                 </StackPanel>
+
+                <!-- Botão de tema (sol/lua) no rodapé da barra lateral -->
+                <Button DockPanel.Dock="Bottom" Style="{StaticResource GhostButton}" Margin="14,8,14,16"
+                        Command="{Binding ToggleThemeCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ThemeIcon}" FontSize="15" Margin="0,0,8,0"/>
+                        <TextBlock Text="Tema" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
                 <StackPanel>
                     <RadioButton Style="{StaticResource NavItem}" GroupName="nav" IsChecked="True"

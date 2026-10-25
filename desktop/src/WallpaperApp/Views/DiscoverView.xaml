@@ -29,7 +29,7 @@
                         <KeyBinding Key="Return" Command="{Binding SearchCommand}"/>
                     </TextBox.InputBindings>
                 </TextBox>
-                <TextBlock Text="Buscar wallpapers..." Foreground="{StaticResource Muted}" Margin="12,0,0,0"
+                <TextBlock Text="Buscar wallpapers..." Foreground="{DynamicResource Muted}" Margin="12,0,0,0"
                            VerticalAlignment="Center" IsHitTestVisible="False"
                            Visibility="{Binding Search, Converter={StaticResource NoText}}"/>
             </Grid>
@@ -74,8 +74,8 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Width="252" Margin="0,0,16,16" Background="{StaticResource Surface}"
-                                        BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="12">
+                                <Border Width="252" Margin="0,0,16,16" Background="{DynamicResource Surface}"
+                                        BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12">
                                     <StackPanel>
                                         <!-- Miniatura -->
                                         <Grid Height="150">
@@ -85,7 +85,7 @@
                                             <!-- fundo escuro só quando NÃO há miniatura -->
                                             <Border CornerRadius="12,12,0,0" Background="#141418"
                                                     Visibility="{Binding ThumbnailUrl, Converter={StaticResource NoText}}">
-                                                <TextBlock Text="▶" FontSize="34" Foreground="{StaticResource Muted}"
+                                                <TextBlock Text="▶" FontSize="34" Foreground="{DynamicResource Muted}"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center"
                                                            Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}"/>
                                             </Border>
@@ -104,7 +104,7 @@
                                             <Border Background="#CC000000" Visibility="{Binding Busy, Converter={StaticResource Bool2Vis}}">
                                                 <StackPanel VerticalAlignment="Center" Margin="20,0">
                                                     <ProgressBar Height="6" Minimum="0" Maximum="1" Value="{Binding Progress}"
-                                                                 Foreground="{StaticResource Accent}" Background="{StaticResource Surface2}" BorderThickness="0"/>
+                                                                 Foreground="{DynamicResource Accent}" Background="{DynamicResource Surface2}" BorderThickness="0"/>
                                                     <TextBlock Text="Baixando..." Foreground="White" FontSize="11" Margin="0,6,0,0" HorizontalAlignment="Center"/>
                                                 </StackPanel>
                                             </Border>
@@ -113,7 +113,7 @@
                                         <StackPanel Margin="12,10,12,12">
                                             <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
                                                        TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding ResolutionLabel}" Foreground="{StaticResource Muted}"
+                                            <TextBlock Text="{Binding ResolutionLabel}" Foreground="{DynamicResource Muted}"
                                                        FontSize="12" Margin="0,2,0,10"/>
                                             <Button Content="{Binding ActionLabel}" Command="{Binding ApplyCommand}"
                                                     Style="{StaticResource PrimaryButton}"/>
@@ -132,14 +132,14 @@
             </ScrollViewer>
 
             <!-- Estados -->
-            <TextBlock Text="Carregando catálogo..." Foreground="{StaticResource Muted}"
+            <TextBlock Text="Carregando catálogo..." Foreground="{DynamicResource Muted}"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        Visibility="{Binding Loading, Converter={StaticResource Bool2Vis}}"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                         Visibility="{Binding Empty, Converter={StaticResource Bool2Vis}}">
-                <TextBlock Text="Nenhum wallpaper encontrado" Foreground="{StaticResource Text}"
+                <TextBlock Text="Nenhum wallpaper encontrado" Foreground="{DynamicResource Text}"
                            FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding Status}" Foreground="{StaticResource Muted}" FontSize="13"
+                <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Muted}" FontSize="13"
                            Margin="0,6,0,0" TextAlignment="Center" MaxWidth="360" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>

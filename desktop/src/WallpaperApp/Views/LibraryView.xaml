@@ -13,7 +13,7 @@
         <Grid Grid.Row="0" Margin="0,0,0,16">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Sub}" Foreground="{StaticResource Muted}" FontSize="13" Margin="0,4,0,0"/>
+                <TextBlock Text="{Binding Sub}" Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,0"/>
             </StackPanel>
             <Button Content="⬆  Importar do PC" Style="{StaticResource GhostButton}"
                     HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -26,8 +26,8 @@
                     <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="252" Margin="0,0,16,16" Background="{StaticResource Surface}"
-                                    BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="12">
+                            <Border Width="252" Margin="0,0,16,16" Background="{DynamicResource Surface}"
+                                    BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12">
                                 <StackPanel>
                                     <Grid Height="150">
                                         <Border CornerRadius="12,12,0,0" Background="#000" ClipToBounds="True">
@@ -35,7 +35,7 @@
                                         </Border>
                                         <Border CornerRadius="12,12,0,0" Background="#141418"
                                                 Visibility="{Binding Thumb, Converter={StaticResource NoText}}">
-                                            <TextBlock Text="▶" FontSize="34" Foreground="{StaticResource Muted}"
+                                            <TextBlock Text="▶" FontSize="34" Foreground="{DynamicResource Muted}"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}"/>
                                         </Border>
@@ -46,7 +46,7 @@
                                                 <Style TargetType="Button">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Favorite}" Value="True">
-                                                            <Setter Property="Foreground" Value="{StaticResource Accent}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -70,7 +70,7 @@
             </ScrollViewer>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                         Visibility="{Binding Empty, Converter={StaticResource Bool2Vis}}">
-                <TextBlock Text="{Binding EmptyText}" Foreground="{StaticResource Muted}" FontSize="14"
+                <TextBlock Text="{Binding EmptyText}" Foreground="{DynamicResource Muted}" FontSize="14"
                            TextAlignment="Center" MaxWidth="340" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>

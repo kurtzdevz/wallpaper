@@ -35,6 +35,7 @@ public partial class App : Application
         Api = new ApiClient(Config);
         Library = new LibraryStore();
         Settings = new SettingsService();
+        ThemeService.Apply(Settings.Current.Theme);   // aplica tema antes de abrir janelas
         Downloads = new DownloadManager(Api, Library);
         License = new LicenseService(Api);
 
