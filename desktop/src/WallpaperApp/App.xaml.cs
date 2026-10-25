@@ -30,6 +30,11 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // Captura qualquer erro fatal em um arquivo (ajuda a diagnosticar crash na abertura).
+        DispatcherUnhandledException += (_, ev) => { LogCrash(ev.Exception); };
+        AppDomain.CurrentDomain.UnhandledException += (_, ev) => { LogCrash(ev.ExceptionObject as Exception); };
+
         // fechar a janela NÃO encerra o app — ele vive em segundo plano (bandeja)
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
@@ -122,6 +127,17 @@ public partial class App : Application
                 Engine.ApplyImage(entry.LocalPath, Settings.Current.ImageFit);
         }
         catch { /* best-effort na inicialização */ }
+    }
+
+    private static void LogCrash(Exception? ex)
+    {
+        try
+        {
+            System.IO.File.WriteAllText(
+                System.IO.Path.Combine(AppConfig.DataDir, "crash.log"),
+                DateTime.Now + "\n\n" + (ex?.ToString() ?? "erro desconhecido"));
+        }
+        catch { }
     }
 
     protected override void OnExit(ExitEventArgs e)
