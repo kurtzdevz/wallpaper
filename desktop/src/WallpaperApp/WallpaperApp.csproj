@@ -22,6 +22,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Remove o import global de System.Windows.Forms (vem do UseWindowsForms) para
+         evitar ambiguidade de UserControl/Application/MessageBox com o WPF.
+         TrayService e WallpaperGuard usam nome completo/alias para o WinForms. -->
+    <Using Remove="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Reprodução de vídeo robusta (mp4 E webm), como o Lively usa libVLC/mpv. -->
     <PackageReference Include="LibVLCSharp" Version="3.9.0" />
     <PackageReference Include="LibVLCSharp.WPF" Version="3.9.0" />
