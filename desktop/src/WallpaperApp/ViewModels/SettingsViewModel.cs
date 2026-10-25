@@ -25,6 +25,24 @@ public sealed class SettingsViewModel : ObservableObject
     public int FpsLimit { get => S.FpsLimit; set { S.FpsLimit = value; Save(); OnPropertyChanged(); } }
     public string ImageFit { get => S.ImageFit; set { S.ImageFit = value; Save(); OnPropertyChanged(); } }
 
+    // Troca automática (playlist)
+    public bool AutoSwitchEnabled
+    {
+        get => S.AutoSwitchEnabled;
+        set { S.AutoSwitchEnabled = value; Save(); App.Playlist.Apply(); OnPropertyChanged(); }
+    }
+    public bool AutoSwitchFavoritesOnly
+    {
+        get => S.AutoSwitchFavoritesOnly;
+        set { S.AutoSwitchFavoritesOnly = value; Save(); OnPropertyChanged(); }
+    }
+    public int AutoSwitchMinutes
+    {
+        get => S.AutoSwitchMinutes;
+        set { S.AutoSwitchMinutes = value; Save(); App.Playlist.Apply(); OnPropertyChanged(); }
+    }
+    public RelayCommand SetIntervalCommand { get; }
+
     public RelayCommand SetFpsCommand { get; }
     public RelayCommand SetFitCommand { get; }
 

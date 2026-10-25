@@ -17,10 +17,18 @@ public partial class App : Application
     public static DownloadsService DownloadTracker { get; } = new();
     public static LicenseService License { get; private set; } = null!;
     public static IWallpaperEngine Engine { get; private set; } = null!;
+    public static TrayService Tray { get; } = new();
+    public static WallpaperGuard Guard { get; } = new();
+    public static PlaylistService Playlist { get; } = new();
+
+    // true quando o usuário realmente mandou sair (pela bandeja)
+    public static bool ExitRequested { get; private set; }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        // fechar a janela NÃO encerra o app — ele vive em segundo plano (bandeja)
+        ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
         // composição dos serviços (sem container externo — simples e explícito)
         Config = AppConfig.Load();
@@ -49,15 +57,24 @@ public partial class App : Application
         // gate de licença: sem ativação, abre a tela de ativação primeiro
         if (License.IsActivated)
         {
-            ShowMain();
+            StartApp();
         }
         else
         {
             var vm = new ActivationViewModel();
             var win = new ActivationWindow { DataContext = vm };
-            vm.Activated += () => { ShowMain(); win.Close(); };
+            vm.Activated += () => { StartApp(); win.Close(); };
             win.Show();
         }
+    }
+
+    // Inicia os serviços de segundo plano + abre a janela principal.
+    private void StartApp()
+    {
+        try { Tray.Initialize(); } catch { }
+        try { Guard.Start(); } catch { }
+        try { Playlist.Apply(); } catch { }
+        ShowMain();
     }
 
     private void ShowMain()
@@ -65,10 +82,28 @@ public partial class App : Application
         var main = new MainWindow { DataContext = new MainViewModel() };
         if (Settings.Current.StartMinimized) main.WindowState = WindowState.Minimized;
         MainWindow = main;
-        main.Show();
+        if (!Settings.Current.StartMinimized) main.Show();
 
         if (Settings.Current.RestoreOnStartup && Settings.Current.ActiveWallpaperId is string id)
             RestoreActive(id);
+    }
+
+    // chamado pela bandeja / ao reabrir
+    public static void ShowMainWindow()
+    {
+        var w = Current.MainWindow;
+        if (w == null) return;
+        w.Show();
+        w.WindowState = WindowState.Normal;
+        w.Activate();
+    }
+
+    // saída real (pela bandeja)
+    public static void ExitApp()
+    {
+        ExitRequested = true;
+        try { Tray.Dispose(); } catch { }
+        Current.Shutdown();
     }
 
     private static void RestoreActive(string id)
@@ -87,6 +122,8 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        try { Guard.Stop(); } catch { }
+        try { Tray.Dispose(); } catch { }
         try { Engine.Dispose(); } catch { }
         base.OnExit(e);
     }

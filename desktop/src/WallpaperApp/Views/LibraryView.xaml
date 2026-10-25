@@ -10,10 +10,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/><RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Sub}" Foreground="{StaticResource Muted}" FontSize="13" Margin="0,4,0,0"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Sub}" Foreground="{StaticResource Muted}" FontSize="13" Margin="0,4,0,0"/>
+            </StackPanel>
+            <Button Content="⬆  Importar do PC" Style="{StaticResource GhostButton}"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Command="{Binding ImportCommand}"
+                    Visibility="{Binding ShowImport, Converter={StaticResource Bool2Vis}}"/>
+        </Grid>
         <Grid Grid.Row="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,0,24">
                 <ItemsControl ItemsSource="{Binding Items}">

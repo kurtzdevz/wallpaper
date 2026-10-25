@@ -5,6 +5,8 @@
     <!-- net8.0-windows é LTS e amplamente instalado. Para .NET 10, troque para net10.0-windows. -->
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <!-- WinForms habilitado só para o ícone de bandeja (NotifyIcon) e status de energia. -->
+    <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
