@@ -23,7 +23,23 @@ public sealed class DiscoverViewModel : ObservableObject
     public string Sort { get => _sort; set { if (Set(ref _sort, value)) _ = ReloadAsync(); } }
 
     private string _search = "";
-    public string Search { get => _search; set => Set(ref _search, value); }
+    public string Search
+    {
+        get => _search;
+        set { if (Set(ref _search, value)) RestartDebounce(); }
+    }
+    private System.Windows.Threading.DispatcherTimer? _debounce;
+    private void RestartDebounce()
+    {
+        if (_debounce == null) return;
+        _debounce.Stop();
+        _debounce.Start();
+    }
+
+    // Painel de filtros (um único botão "Filtros" abre/fecha)
+    private bool _filtersOpen;
+    public bool FiltersOpen { get => _filtersOpen; set => Set(ref _filtersOpen, value); }
+    public RelayCommand ToggleFiltersCommand { get; }
 
     private bool _loading;
     public bool Loading { get => _loading; set => Set(ref _loading, value); }
@@ -38,10 +54,21 @@ public sealed class DiscoverViewModel : ObservableObject
     private bool _hasMore;
     public bool HasMore { get => _hasMore; set => Set(ref _hasMore, value); }
 
+    // Painel lateral de detalhes: card selecionado (null = painel fechado).
+    private WallpaperCardViewModel? _selected;
+    public WallpaperCardViewModel? Selected
+    {
+        get => _selected;
+        set { if (Set(ref _selected, value)) OnPropertyChanged(nameof(HasSelection)); }
+    }
+    public bool HasSelection => _selected != null;
+
     public RelayCommand SearchCommand { get; }
     public RelayCommand SetTypeCommand { get; }
     public RelayCommand SetSortCommand { get; }
     public RelayCommand SelectCategoryCommand { get; }
+    public RelayCommand SelectWallpaperCommand { get; }
+    public RelayCommand CloseDetailCommand { get; }
     public AsyncRelayCommand LoadMoreCommand { get; }
 
     public DiscoverViewModel()
@@ -50,7 +77,14 @@ public sealed class DiscoverViewModel : ObservableObject
         SetTypeCommand = new RelayCommand(p => Type = p as string ?? "all");
         SetSortCommand = new RelayCommand(p => Sort = p as string ?? "recent");
         SelectCategoryCommand = new RelayCommand(p => SelectedCategory = p as string);
+        SelectWallpaperCommand = new RelayCommand(p => { if (p is WallpaperCardViewModel c) Selected = c; });
+        CloseDetailCommand = new RelayCommand(_ => Selected = null);
+        ToggleFiltersCommand = new RelayCommand(_ => FiltersOpen = !FiltersOpen);
         LoadMoreCommand = new AsyncRelayCommand(_ => LoadPageAsync(_page + 1), _ => HasMore && !Loading);
+
+        _debounce = new System.Windows.Threading.DispatcherTimer
+        { Interval = TimeSpan.FromMilliseconds(350) };
+        _debounce.Tick += (_, _) => { _debounce!.Stop(); _ = ReloadAsync(); };
     }
 
     public async Task InitializeAsync()

@@ -43,6 +43,29 @@ public sealed class LibraryStore
         if (e != null) { e.Favorite = !e.Favorite; Save(); }
     }
 
+    public bool IsFavorite(string id) => Get(id)?.Favorite == true;
+
+    // Favorita um wallpaper mesmo que ainda não tenha sido baixado:
+    // cria uma entrada mínima (sem arquivo local) apenas para marcar o favorito.
+    public bool ToggleFavorite(WallpaperDto w)
+    {
+        var e = Get(w.Id);
+        if (e == null)
+        {
+            e = new LibraryEntry
+            {
+                Id = w.Id, Title = w.Title, Type = w.Type,
+                ThumbnailUrl = w.ThumbnailUrl,
+                ResolutionWidth = w.ResolutionWidth, ResolutionHeight = w.ResolutionHeight,
+                Favorite = true
+            };
+            _entries.Add(e);
+        }
+        else e.Favorite = !e.Favorite;
+        Save();
+        return e.Favorite;
+    }
+
     public void MarkApplied(string id)
     {
         var e = Get(id);

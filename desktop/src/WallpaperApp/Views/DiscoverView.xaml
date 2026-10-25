@@ -9,139 +9,244 @@
         <local:NullOrEmptyToVisibilityConverter x:Key="NoText"/>
     </UserControl.Resources>
 
-    <Grid Margin="24,20,24,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!-- Duas colunas: catálogo (*) + painel de detalhes (Auto) -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- Barra superior: busca + ordenação/tipo -->
-        <Grid Grid.Row="0" Margin="0,0,0,14">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <!-- ===== Catálogo ===== -->
+        <Grid Grid.Column="0" Margin="24,20,24,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0" MaxWidth="420" HorizontalAlignment="Left">
-                <TextBox Style="{StaticResource SearchBox}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Return" Command="{Binding SearchCommand}"/>
-                    </TextBox.InputBindings>
-                </TextBox>
-                <TextBlock Text="Buscar wallpapers..." Foreground="{DynamicResource Muted}" Margin="12,0,0,0"
-                           VerticalAlignment="Center" IsHitTestVisible="False"
-                           Visibility="{Binding Search, Converter={StaticResource NoText}}"/>
+            <!-- Barra superior: busca + botão Filtros -->
+            <Grid Grid.Row="0" Margin="0,0,0,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" MaxWidth="460" HorizontalAlignment="Left">
+                    <TextBox Style="{StaticResource SearchBox}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding SearchCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <TextBlock Text="Buscar wallpapers..." Foreground="{DynamicResource Muted}" Margin="12,0,0,0"
+                               VerticalAlignment="Center" IsHitTestVisible="False"
+                               Visibility="{Binding Search, Converter={StaticResource NoText}}"/>
+                </Grid>
+
+                <Button Grid.Column="1" Content="⚙  Filtros" Style="{StaticResource GhostButton}"
+                        Command="{Binding ToggleFiltersCommand}"/>
             </Grid>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button Content="Recentes" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
-                        Command="{Binding SetSortCommand}" CommandParameter="recent"/>
-                <Button Content="Populares" Style="{StaticResource GhostButton}" Margin="0,0,16,0"
-                        Command="{Binding SetSortCommand}" CommandParameter="popular"/>
-                <Button Content="Todos" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
-                        Command="{Binding SetTypeCommand}" CommandParameter="all"/>
-                <Button Content="Imagens" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
-                        Command="{Binding SetTypeCommand}" CommandParameter="image"/>
-                <Button Content="Vídeos" Style="{StaticResource GhostButton}"
-                        Command="{Binding SetTypeCommand}" CommandParameter="video"/>
-            </StackPanel>
-        </Grid>
-
-        <!-- Chips de categorias -->
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,12">
-            <ItemsControl ItemsSource="{Binding Categories}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding Name}" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
-                                Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                CommandParameter="{Binding Slug}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-
-        <!-- Catálogo -->
-        <Grid Grid.Row="2">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,0,24">
+            <!-- Painel de filtros (colapsável) -->
+            <Border Grid.Row="1" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}"
+                    BorderThickness="1" CornerRadius="12" Padding="16,12" Margin="0,0,0,14"
+                    Visibility="{Binding FiltersOpen, Converter={StaticResource Bool2Vis}}">
                 <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Items}">
+                    <TextBlock Text="Ordenar" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <Button Content="Recentes" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                                Command="{Binding SetSortCommand}" CommandParameter="recent"/>
+                        <Button Content="Populares" Style="{StaticResource GhostButton}"
+                                Command="{Binding SetSortCommand}" CommandParameter="popular"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Tipo" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <Button Content="Todos" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                                Command="{Binding SetTypeCommand}" CommandParameter="all"/>
+                        <Button Content="Imagens" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                                Command="{Binding SetTypeCommand}" CommandParameter="image"/>
+                        <Button Content="Vídeos" Style="{StaticResource GhostButton}"
+                                Command="{Binding SetTypeCommand}" CommandParameter="video"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Categorias" Foreground="{DynamicResource Muted}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <ItemsControl ItemsSource="{Binding Categories}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Width="252" Margin="0,0,16,16" Background="{DynamicResource Surface}"
-                                        BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12">
-                                    <StackPanel>
-                                        <!-- Miniatura -->
-                                        <Grid Height="150">
-                                            <Border CornerRadius="12,12,0,0" Background="#000" ClipToBounds="True">
-                                                <Image Source="{Binding ThumbnailUrl}" Stretch="UniformToFill"/>
-                                            </Border>
-                                            <!-- fundo escuro só quando NÃO há miniatura -->
-                                            <Border CornerRadius="12,12,0,0" Background="#141418"
-                                                    Visibility="{Binding ThumbnailUrl, Converter={StaticResource NoText}}">
-                                                <TextBlock Text="▶" FontSize="34" Foreground="{DynamicResource Muted}"
-                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                           Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}"/>
-                                            </Border>
-                                            <!-- selo de play para vídeos que têm miniatura -->
-                                            <Border Background="#88000000" CornerRadius="16" Width="34" Height="34"
-                                                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="8"
-                                                    Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}">
-                                                <TextBlock Text="▶" FontSize="13" Foreground="White"
-                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                            <Border Background="#99000000" CornerRadius="20" Padding="8,3"
-                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8">
-                                                <TextBlock Text="{Binding TypeLabel}" FontSize="10" Foreground="White" FontWeight="SemiBold"/>
-                                            </Border>
-                                            <!-- Progresso -->
-                                            <Border Background="#CC000000" Visibility="{Binding Busy, Converter={StaticResource Bool2Vis}}">
-                                                <StackPanel VerticalAlignment="Center" Margin="20,0">
-                                                    <ProgressBar Height="6" Minimum="0" Maximum="1" Value="{Binding Progress}"
-                                                                 Foreground="{DynamicResource Accent}" Background="{DynamicResource Surface2}" BorderThickness="0"/>
-                                                    <TextBlock Text="Baixando..." Foreground="White" FontSize="11" Margin="0,6,0,0" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </Grid>
-                                        <!-- Corpo -->
-                                        <StackPanel Margin="12,10,12,12">
-                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding ResolutionLabel}" Foreground="{DynamicResource Muted}"
-                                                       FontSize="12" Margin="0,2,0,10"/>
-                                            <Button Content="{Binding ActionLabel}" Command="{Binding ApplyCommand}"
-                                                    Style="{StaticResource PrimaryButton}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
+                                <Button Content="{Binding Name}" Style="{StaticResource GhostButton}" Margin="0,0,8,8"
+                                        Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding Slug}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
-                    <!-- Carregar mais -->
-                    <Button Content="Carregar mais" Style="{StaticResource GhostButton}" HorizontalAlignment="Center"
-                            Margin="0,4,0,24" Command="{Binding LoadMoreCommand}"
-                            Visibility="{Binding HasMore, Converter={StaticResource Bool2Vis}}"/>
                 </StackPanel>
-            </ScrollViewer>
+            </Border>
 
-            <!-- Estados -->
-            <TextBlock Text="Carregando catálogo..." Foreground="{DynamicResource Muted}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Visibility="{Binding Loading, Converter={StaticResource Bool2Vis}}"/>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Visibility="{Binding Empty, Converter={StaticResource Bool2Vis}}">
-                <TextBlock Text="Nenhum wallpaper encontrado" Foreground="{DynamicResource Text}"
-                           FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Muted}" FontSize="13"
-                           Margin="0,6,0,0" TextAlignment="Center" MaxWidth="360" TextWrapping="Wrap"/>
-            </StackPanel>
+            <!-- Catálogo -->
+            <Grid Grid.Row="2">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,0,24">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Items}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="252" Margin="0,0,16,16" Background="{DynamicResource Surface}"
+                                            BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="12"
+                                            Cursor="Hand">
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick"
+                                                          Command="{Binding DataContext.SelectWallpaperCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          CommandParameter="{Binding}"/>
+                                        </Border.InputBindings>
+                                        <StackPanel>
+                                            <!-- Miniatura -->
+                                            <Grid Height="150">
+                                                <Border CornerRadius="12,12,0,0" Background="#000" ClipToBounds="True">
+                                                    <Image Source="{Binding ThumbnailUrl}" Stretch="UniformToFill"/>
+                                                </Border>
+                                                <Border CornerRadius="12,12,0,0" Background="#141418"
+                                                        Visibility="{Binding ThumbnailUrl, Converter={StaticResource NoText}}">
+                                                    <TextBlock Text="▶" FontSize="34" Foreground="{DynamicResource Muted}"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                               Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}"/>
+                                                </Border>
+                                                <Border Background="#88000000" CornerRadius="16" Width="34" Height="34"
+                                                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="8"
+                                                        Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}">
+                                                    <TextBlock Text="▶" FontSize="13" Foreground="White"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <Border Background="#99000000" CornerRadius="20" Padding="8,3"
+                                                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8">
+                                                    <TextBlock Text="{Binding TypeLabel}" FontSize="10" Foreground="White" FontWeight="SemiBold"/>
+                                                </Border>
+                                                <!-- selo de ativo -->
+                                                <Border Background="{DynamicResource Accent}" CornerRadius="20" Padding="8,3"
+                                                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8"
+                                                        Visibility="{Binding IsActive, Converter={StaticResource Bool2Vis}}">
+                                                    <TextBlock Text="✓ No desktop" FontSize="10" Foreground="White" FontWeight="SemiBold"/>
+                                                </Border>
+                                                <!-- Progresso -->
+                                                <Border Background="#CC000000" Visibility="{Binding Busy, Converter={StaticResource Bool2Vis}}">
+                                                    <StackPanel VerticalAlignment="Center" Margin="20,0">
+                                                        <ProgressBar Height="6" Minimum="0" Maximum="1" Value="{Binding Progress}"
+                                                                     Foreground="{DynamicResource Accent}" Background="{DynamicResource Surface2}" BorderThickness="0"/>
+                                                        <TextBlock Text="Baixando..." Foreground="White" FontSize="11" Margin="0,6,0,0" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+                                            <!-- Corpo (sem botão Aplicar: aplicar só no painel de detalhes) -->
+                                            <StackPanel Margin="12,10,12,12">
+                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding ResolutionLabel}" Foreground="{DynamicResource Muted}"
+                                                           FontSize="12" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button Content="Carregar mais" Style="{StaticResource GhostButton}" HorizontalAlignment="Center"
+                                Margin="0,4,0,24" Command="{Binding LoadMoreCommand}"
+                                Visibility="{Binding HasMore, Converter={StaticResource Bool2Vis}}"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Estados -->
+                <TextBlock Text="Carregando catálogo..." Foreground="{DynamicResource Muted}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Visibility="{Binding Loading, Converter={StaticResource Bool2Vis}}"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Visibility="{Binding Empty, Converter={StaticResource Bool2Vis}}">
+                    <TextBlock Text="Nenhum wallpaper encontrado" Foreground="{DynamicResource Text}"
+                               FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Muted}" FontSize="13"
+                               Margin="0,6,0,0" TextAlignment="Center" MaxWidth="360" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Grid>
         </Grid>
+
+        <!-- ===== Painel lateral de detalhes ===== -->
+        <Border Grid.Column="1" Width="380" Background="{DynamicResource Surface}"
+                BorderBrush="{DynamicResource Border}" BorderThickness="1,0,0,0"
+                Visibility="{Binding HasSelection, Converter={StaticResource Bool2Vis}}">
+            <Grid DataContext="{Binding Selected}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20,18,20,20">
+                        <!-- Topo: fechar -->
+                        <Button Content="✕  Fechar" Style="{StaticResource GhostButton}" HorizontalAlignment="Right"
+                                Command="{Binding DataContext.CloseDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+
+                        <!-- Preview grande -->
+                        <Border CornerRadius="12" Background="#000" ClipToBounds="True" Height="210" Margin="0,8,0,14">
+                            <Grid>
+                                <Image Source="{Binding PreviewUrl}" Stretch="UniformToFill"/>
+                                <Border Background="#88000000" CornerRadius="18" Width="40" Height="40"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Visibility="{Binding IsVideo, Converter={StaticResource Bool2Vis}}">
+                                    <TextBlock Text="▶" FontSize="16" Foreground="White"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Text="{Binding Title}" FontSize="19" FontWeight="Bold" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="13"
+                                   TextWrapping="Wrap" Margin="0,6,0,0"
+                                   Visibility="{Binding Description, Converter={StaticResource HasText}}"/>
+
+                        <!-- Ficha -->
+                        <Border Background="{DynamicResource Surface2}" CornerRadius="10" Padding="14,10" Margin="0,14,0,0">
+                            <StackPanel>
+                                <Grid Margin="0,3">
+                                    <TextBlock Text="Tipo" Foreground="{DynamicResource Muted}" FontSize="12" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding TypeLabel}" Foreground="{DynamicResource Text}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,3">
+                                    <TextBlock Text="Resolução" Foreground="{DynamicResource Muted}" FontSize="12" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding ResolutionLabel}" Foreground="{DynamicResource Text}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,3">
+                                    <TextBlock Text="Tamanho" Foreground="{DynamicResource Muted}" FontSize="12" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding SizeLabel}" Foreground="{DynamicResource Text}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,3">
+                                    <TextBlock Text="Downloads" Foreground="{DynamicResource Muted}" FontSize="12" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding DownloadsLabel}" Foreground="{DynamicResource Text}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Tags -->
+                        <ItemsControl ItemsSource="{Binding Tags}" Margin="0,12,0,0"
+                                      Visibility="{Binding HasTags, Converter={StaticResource Bool2Vis}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource Surface2}" CornerRadius="20" Padding="10,4" Margin="0,0,6,6">
+                                        <TextBlock Text="{Binding}" Foreground="{DynamicResource Muted}" FontSize="11"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Ações: Aplicar / Favoritar -->
+                        <Button Content="{Binding ActionLabel}" Command="{Binding ApplyCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="0,16,0,0"/>
+                        <Button Content="{Binding FavoriteLabel}" Command="{Binding ToggleFavoriteCommand}"
+                                Style="{StaticResource GhostButton}" Margin="0,8,0,0" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
